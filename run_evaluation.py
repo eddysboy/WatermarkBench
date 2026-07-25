@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Watermark Evaluation Framework.
 
 Evaluates watermarking models on image quality and robustness metrics:
@@ -137,9 +137,21 @@ def _merge_yaml_config(args, yaml_cfg: dict):
 
 def get_test_images(image_paths: Optional[List[str]] = None) -> List[Path]:
     """Get list of test image paths."""
-    if image_paths:
-        return [Path(p) for p in image_paths if Path(p).exists()]
-    return [p for p in TEST_IMAGES if p.exists()]
+    if image_paths == None:
+        image_paths = TEST_IMAGES
+
+    for path in image_paths:
+        # if path is a directory, get all image files in it
+        p = Path(path)
+        if p.is_dir():
+            return [f for f in p.glob("*") if f.suffix.lower() in [".png", ".jpg", ".jpeg", ".bmp", ".tiff"]]
+        else:
+            # if path is a file, return it if it exists
+            if p.exists() and p.suffix.lower() in [".png", ".jpg", ".jpeg", ".bmp", ".tiff"]:
+                return [p]
+    # if image_paths:
+        # return [Path(p) for p in image_paths if Path(p).exists()]
+    # return [p for p in TEST_IMAGES if p.exists()]
 
 
 def evaluate_model(

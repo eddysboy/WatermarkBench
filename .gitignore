@@ -1,4 +1,4 @@
-# --- Python ---
+﻿# --- Python ---
 __pycache__/
 *.py[cod]
 *.pyo
@@ -28,7 +28,9 @@ desktop.ini
 # --- WatermarkBench specific ---
 # Large model checkpoints (downloaded by prepare.py)
 checkpoints/
+models/InvisMark/ckpts
 models/*/checkpoints/
+models/watermakr-anything/checkpoints/checkpoint.pth
 models/*/ckpts/
 !models/*/checkpoints/.gitkeep
 

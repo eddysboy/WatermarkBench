@@ -4,7 +4,7 @@ device: "cpu"
 
 images:
   # path: "datasets/COCO_val2017/val2017"
-  path: "datasets/images_5"
+  path: "datasets/images_5/"
 
 output:
   path: "results"
