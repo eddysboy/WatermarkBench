@@ -23,4 +23,5 @@ kornia>=0.7.0
 omegaconf>=2.1.0
 
 # Utilities
+huggingface_hub>=0.20.0
 tqdm>=4.60.0

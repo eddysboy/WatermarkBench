@@ -25,6 +25,12 @@ import shutil
 import sys
 import zipfile
 from pathlib import Path
+
+try:
+    from huggingface_hub import hf_hub_download
+    _HF_AVAILABLE = True
+except ImportError:
+    _HF_AVAILABLE = False
 from urllib.request import urlretrieve
 from urllib.error import URLError
 
@@ -37,9 +43,6 @@ MODELS_DIR = ROOT / "models"
 # Download URLs (verified as of 2025)
 # ---------------------------------------------------------------------------
 URLS = {
-    # InvisMark checkpoint (OneDrive link from official repo)
-    "invis_mark": "https://1drv.ms/f/c/7882afab383c8474/Ei_Lasu5CrpHsrNIkYRLenYBmx662VSAovq5hD8r-NsB5A",
-
     # watermark-anything checkpoint + config from Meta FAIR
     "wam_checkpoint": "https://dl.fbaipublicfiles.com/watermark_anything/wam_mit.pth",
     # params.json is in the repo already, but we'll ensure it exists
@@ -142,34 +145,31 @@ def setup_images_5():
 
 
 def setup_invis_mark():
-    """Ensure InvisMark checkpoint exists."""
+    """Ensure InvisMark checkpoint exists. Downloads from HuggingFace."""
     print("\n[2/5] InvisMark checkpoint ...")
     ckpt_dir = MODELS_DIR / "InvisMark" / "ckpts"
     ckpt_path = ckpt_dir / "paper.ckpt"
-    zip_path = ckpt_dir / "ckpt_paper.zip"
 
     if ckpt_path.exists():
         _ok(f"paper.ckpt present ({_human_size(ckpt_path.stat().st_size)})")
         return
 
-    # Try extracting from bundled zip
-    if zip_path.exists():
-        _status("Extracting ckpt_paper.zip ...")
-        try:
-            with zipfile.ZipFile(zip_path, "r") as zf:
-                zf.extractall(ckpt_dir)
-            if ckpt_path.exists():
-                _ok(f"Extracted paper.ckpt ({_human_size(ckpt_path.stat().st_size)})")
-                return
-        except zipfile.BadZipFile:
-            _fail("Corrupted zip file")
+    if not _HF_AVAILABLE:
+        _fail("huggingface_hub not installed. Run: pip install huggingface_hub")
+        return
 
-    # Download from OneDrive
-    _status("Need to download from OneDrive.")
-    _status(f"  Manual download: {URLS['invis_mark']}")
-    _status("  Place paper.ckpt in: " + str(ckpt_dir))
-    _fail("InvisMark checkpoint NOT found -- manual download required.")
-
+    ckpt_dir.mkdir(parents=True, exist_ok=True)
+    _status("Downloading from huggingface.co/shelock/watermark-invismark-model ...")
+    try:
+        downloaded = hf_hub_download(
+            repo_id="shelock/watermark-invismark-model",
+            filename="paper.ckpt",
+            local_dir=ckpt_dir,
+            local_dir_use_symlinks=False,
+        )
+        _ok(f"Downloaded paper.ckpt ({_human_size(Path(downloaded).stat().st_size)})")
+    except Exception as e:
+        _fail(f"Download failed: {e}")
 
 def setup_wam():
     """Ensure watermark-anything checkpoint exists."""

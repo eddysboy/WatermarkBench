@@ -24,17 +24,17 @@ JPEG compression (4 levels), Gaussian blur (3), Gaussian noise (3), brightness/c
 
 ## Getting Started
 
-`ash
+```bash
 # Clone with all model submodules
 git clone --recurse-submodules https://github.com/your-username/WatermarkBench.git
 cd WatermarkBench
-`
+```
 
 If you already cloned without --recurse-submodules:
 
-`ash
+```bash
 git submodule update --init --recursive
-`
+```
 
 ## Quick Start
 
