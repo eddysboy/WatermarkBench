@@ -1,0 +1,12 @@
+[submodule "models/InvisMark"]
+	path = models/InvisMark
+	url = https://github.com/microsoft/InvisMark.git
+[submodule "models/MiniWatermarkDemo"]
+	path = models/MiniWatermarkDemo
+	url = https://github.com/Phnt0mW/MiniWatermarkDemo.git
+[submodule "models/trustmark"]
+	path = models/trustmark
+	url = https://github.com/adobe/trustmark.git
+[submodule "models/watermark-anything"]
+	path = models/watermark-anything
+	url = https://github.com/facebookresearch/watermark-anything.git

@@ -1,0 +1,52 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+.env
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- WatermarkBench specific ---
+# Large model checkpoints (downloaded by prepare.py)
+checkpoints/
+models/*/checkpoints/
+models/*/ckpts/
+!models/*/checkpoints/.gitkeep
+
+# Generated results
+results/
+
+# Downloaded datasets (except the small built-in images_5)
+datasets/*
+!datasets/images_5/
+!datasets/images_5/*
+!datasets/small_test/
+
+# Model outputs
+models/*/outputs/
+
+# Codex internal
+.agents/
+.codex/
+
+# Attack visualization output
+attack_visualization.png

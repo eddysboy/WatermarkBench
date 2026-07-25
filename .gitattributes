@@ -1,0 +1,27 @@
+# Auto-detect text files and normalize line endings
+* text=auto
+
+# Python files: force LF (avoids CRLF warnings on Windows)
+*.py text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.cfg text eol=lf
+*.toml text eol=lf
+*.sh text eol=lf
+*.gitignore text eol=lf
+*.gitattributes text eol=lf
+
+# Binary files: don't touch line endings
+*.pth binary
+*.pt binary
+*.ckpt binary
+*.bin binary
+*.zip binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.wasm binary
+*.mjs binary
