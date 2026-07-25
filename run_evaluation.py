@@ -204,12 +204,20 @@ def evaluate_model(
     print(f"\n  --- Phase 1: Image Quality ---")
     originals_for_fid = []
     watermarked_for_fid = []
+
+    use_progress = len(preprocessed_images) > 10
+    if use_progress:
+        from tqdm import tqdm
+        pbar = tqdm(preprocessed_images, desc="  Image Quality", unit="img",
+                    bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
+    else:
+        pbar = None
+
     for name, image in preprocessed_images:
         try:
             msg = wrapper.random_message(wrapper.payload_bits)
             watermarked = wrapper.encode(image, msg)
 
-            # Compute quality metrics
             psnr_val = compute_psnr(image, watermarked)
             ssim_val = compute_ssim(image, watermarked)
             lpips_val = compute_lpips(image, watermarked, device=device)
@@ -217,10 +225,21 @@ def evaluate_model(
             metrics.record_quality(psnr_val, ssim_val, lpips_val)
             originals_for_fid.append(image)
             watermarked_for_fid.append(watermarked)
-            print(f"    {name:30s}  PSNR={psnr_val:.2f}  SSIM={ssim_val:.4f}  LPIPS={lpips_val:.4f}")
-        except Exception as e:
-            print(f"    {name:30s}  [ERROR] {e}")
 
+            if use_progress:
+                pbar.update(1)
+                pbar.set_postfix(
+                    PSNR=f"{np.mean(metrics.psnr_values):.2f}",
+                    SSIM=f"{np.mean(metrics.ssim_values):.4f}",
+                    LPIPS=f"{np.mean(metrics.lpips_values):.4f}"
+                )
+            else:
+                print(f"    {name:30s}  PSNR={psnr_val:.2f}  SSIM={ssim_val:.4f}  LPIPS={lpips_val:.4f}")
+        except Exception as e:
+            if use_progress:
+                pbar.write(f"    {name:30s}  [ERROR] {e}")
+            else:
+                print(f"    {name:30s}  [ERROR] {e}")
     # FID and CMMD (distribution-level metrics across all images)
     if originals_for_fid:
         fid_val = compute_fid(originals_for_fid, watermarked_for_fid, device=device)
