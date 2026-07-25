@@ -1,0 +1,33 @@
+device: "cuda"
+
+images:
+  path: "datasets/COCO_val2017/val2017"
+  # path: "datasets/images_5/"
+
+output:
+  path: "results"
+  style: "default"
+  csv: true
+  json: true
+
+models:
+  InvisMark:
+    model_path: "models/InvisMark"
+    threshold: 0.5
+  MiniWatermarkDemo:
+    model_path: "models/MiniWatermarkDemo"
+    threshold: 0.5
+  TrustMark-P:
+    model_path: "models/TrustMark-P"
+    threshold: 1.0
+  TrustMark-Q:
+    model_path: "models/TrustMark-Q"
+    threshold: 1.0
+
+# threshold:
+#   InvisMark: 0.5
+#   MiniWatermarkDemo: 0.5
+#   TrustMark-P: 1.0
+#   TrustMark-Q: 1.0
+#   watermark-anything: 0.1
+
