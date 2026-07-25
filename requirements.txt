@@ -12,6 +12,7 @@ scipy>=1.7.0
 # Metrics
 torchmetrics>=1.0.0
 lpips>=0.1.4
+open_clip_torch
 
 # InvisMark dependencies
 bchlib>=0.14.0
