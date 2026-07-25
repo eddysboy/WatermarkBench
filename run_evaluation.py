@@ -253,6 +253,10 @@ def evaluate_model(
     # Phase 2: Clean bit accuracy (no attack)
     # ================================================================
     print(f"\n  --- Phase 2: Clean Bit Accuracy ---")
+
+    bit_acc = 0.0
+    status = "N/A"
+
     for name, image in tqdm(preprocessed_images, desc=f"{name:30s}  Bit Acc={bit_acc:.4f}  Detected={status}") if len(preprocessed_images) > 10 else preprocessed_images:
         try:
             msg = wrapper.random_message(wrapper.payload_bits)
