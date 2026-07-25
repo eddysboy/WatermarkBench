@@ -253,7 +253,7 @@ def evaluate_model(
     # Phase 2: Clean bit accuracy (no attack)
     # ================================================================
     print(f"\n  --- Phase 2: Clean Bit Accuracy ---")
-    for name, image in preprocessed_images:
+    for name, image in tqdm(preprocessed_images, desc=f"{name:30s}  Bit Acc={bit_acc:.4f}  Detected={status}") if len(preprocessed_images) > 10 else preprocessed_images:
         try:
             msg = wrapper.random_message(wrapper.payload_bits)
             watermarked = wrapper.encode(image, msg)
@@ -262,9 +262,13 @@ def evaluate_model(
             bit_acc = compute_bit_accuracy(decoded_bits[:wrapper.payload_bits], msg)
             metrics.record_bit_acc(bit_acc)
             status = "OK" if detected else "MISS"
-            print(f"    {name:30s}  Bit Acc={bit_acc:.4f}  Detected={status}")
+
+            # print(f"    {name:30s}  Bit Acc={bit_acc:.4f}  Detected={status}")
         except Exception as e:
             print(f"    {name:30s}  [ERROR] {e}")
+
+    if len(preprocessed_images) > 10:
+        print(f"    ... and {len(preprocessed_images) - 10} more images evaluated for clean bit accuracy.")
 
     # ================================================================
     # Phase 3: Robustness under attacks (TPR per attack)
