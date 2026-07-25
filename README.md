@@ -22,6 +22,20 @@ A unified evaluation framework for benchmarking image watermarking models across
 
 JPEG compression (4 levels), Gaussian blur (3), Gaussian noise (3), brightness/contrast/saturation adjustment (3 each), salt & pepper noise (2), rotation (3), resize (2), crop (2), horizontal flip, text overlay (2), and 5 composite attacks.
 
+## Getting Started
+
+`ash
+# Clone with all model submodules
+git clone --recurse-submodules https://github.com/your-username/WatermarkBench.git
+cd WatermarkBench
+`
+
+If you already cloned without --recurse-submodules:
+
+`ash
+git submodule update --init --recursive
+`
+
 ## Quick Start
 
 ```bash
