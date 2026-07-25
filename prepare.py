@@ -47,13 +47,6 @@ URLS = {
     # LPIPS AlexNet backbone (torch hub auto-download URL)
     "lpips_alexnet": "https://download.pytorch.org/models/alexnet-owt-7be5be79.pth",
 
-    # InceptionV3 for FID (torchmetrics auto-download URL)
-    "fid_inception": (
-        "https://github.com/Lightning-AI/torchmetrics/raw/"
-        "f4348ba00941818785b32bcbaa3be37fab00a9df/src/torchmetrics/image/"
-        "weights-inception-2015-12-05-6726825d.pth"
-    ),
-
     # OpenCLIP ViT-B-32 for CMMD
     "open_clip": "https://huggingface.co/laion/CLIP-ViT-B-32-laion2B-s34B-b79K/resolve/main/open_clip_pytorch_model.bin",
 }
@@ -206,7 +199,7 @@ def setup_wam():
 
 def setup_fid_checkpoints():
     """Pre-download FID/CMMD backbone models for offline use."""
-    print("\n[4/5] FID / CMMD backbone checkpoints ...")
+    print("\n[4/5] LPIPS / CMMD backbone checkpoints ...")
     CHECKPOINTS_DIR.mkdir(exist_ok=True)
 
     # LPIPS AlexNet
@@ -214,13 +207,6 @@ def setup_fid_checkpoints():
         URLS["lpips_alexnet"],
         CHECKPOINTS_DIR / "alexnet-owt-7be5be79.pth",
         "LPIPS AlexNet backbone"
-    )
-
-    # InceptionV3 for FID
-    _download(
-        URLS["fid_inception"],
-        CHECKPOINTS_DIR / "weights-inception-2015-12-05-6726825d.pth",
-        "FID InceptionV3 backbone"
     )
 
     # OpenCLIP for CMMD
@@ -277,7 +263,6 @@ def verify_all() -> dict:
 
     # FID/CMMD checkpoints
     checks["lpips"] = (CHECKPOINTS_DIR / "alexnet-owt-7be5be79.pth").exists()
-    checks["fid"] = (CHECKPOINTS_DIR / "weights-inception-2015-12-05-6726825d.pth").exists()
     checks["cmmd"] = (CHECKPOINTS_DIR / "open_clip_pytorch_model.bin").exists()
 
     return checks
@@ -295,7 +280,6 @@ def print_verdict(checks: dict):
         "miniwm":       "MiniWatermarkDemo checkpoint",
         "wam":          "Watermark-Anything checkpoint",
         "lpips":        "LPIPS backbone (AlexNet)",
-        "fid":          "FID backbone (InceptionV3)",
         "cmmd":         "CMMD backbone (OpenCLIP)",
     }
 

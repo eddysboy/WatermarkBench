@@ -54,10 +54,6 @@ def _get_fid_obj(device: str = "cpu") -> object:
         import torch.hub
         from torchmetrics.image.fid import FrechetInceptionDistance
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-        inception_path = os.path.join(project_root, 'checkpoints', 'weights-inception-2015-12-05-6726825d.pth')
-        if not os.path.exists(inception_path):
-            print("[WARN] InceptionV3 weights not found in checkpoints/. FID skipped.")
-            return None
         old_hub_dir = torch.hub.get_dir()
         torch.hub.set_dir(project_root)
         try:

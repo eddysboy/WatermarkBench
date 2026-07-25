@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Watermark Evaluation Framework.
 
 Evaluates watermarking models on image quality and robustness metrics:
