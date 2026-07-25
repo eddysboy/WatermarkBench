@@ -94,7 +94,7 @@ def compute_psnr(original: torch.Tensor, watermarked: torch.Tensor, data_range: 
 
 def compute_ssim(original: torch.Tensor, watermarked: torch.Tensor, data_range: float = 1.0) -> float:
     """Compute SSIM between two images [1, C, H, W] in [0, data_range]."""
-    ssim = StructuralSimilarityIndexMeasure(data_range=data_range)
+    ssim = StructuralSimilarityIndexMeasure(data_range=data_range).to(original.device)
     val = ssim(watermarked, original)
     return float(val.item())
 
