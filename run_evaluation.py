@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Watermark Evaluation Framework.
 
 Evaluates watermarking models on image quality and robustness metrics:
@@ -543,8 +543,15 @@ def main():
         print(f"  Checked: {TEST_IMAGES if not args.images else args.images}")
         sys.exit(1)
     print(f"Test images ({len(images)}):")
-    for img in images:
+    # 输出前10张图：
+    for img in images[:10]:
         print(f"  {img.name}")
+    if len(images) > 10:
+        print(f"  ... and {len(images) - 10} more images.")
+
+    # 原来的代码：
+    # for img in images:
+    #     print(f"  {img.name}")
 
     # Output paths
     timestamp = time.strftime("%Y%m%d_%H%M%S")
