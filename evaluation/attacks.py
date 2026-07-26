@@ -24,7 +24,8 @@ def jpeg_compress(x: torch.Tensor, quality: int) -> torch.Tensor:
     if quality < 1 or quality > 100:
         return x
     # encode_jpeg expects 3D uint8 (C, H, W) or 4D (N, C, H, W) in [0, 255]
-    x_uint8 = (x.clamp(0, 1) * 255).to(torch.uint8)
+    # Must be CPU: torchvision encode_jpeg rejects GPU tensors
+    x_uint8 = (x.clamp(0, 1) * 255).to(torch.uint8).cpu()
     # Process each image in batch individually
     results = []
     for i in range(x_uint8.shape[0]):

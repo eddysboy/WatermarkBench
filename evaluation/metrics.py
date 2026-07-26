@@ -166,6 +166,7 @@ def compute_cmmd(originals: list, watermarked: list, device: str = "cpu") -> flo
                 img_t = preprocess(pil_img).unsqueeze(0).to(device)
                 with torch.no_grad():
                     feat = model.encode_image(img_t)
+                feat = F.normalize(feat, p=2, dim=-1)
                 feats.append(feat.squeeze(0))
             return torch.stack(feats, dim=0)  # [N, 512]
 
